@@ -10,3 +10,5 @@ def main():
 def parse( file ):
      buffer = json.loads(file)
      print(buffer['resources']['name'])
+
+main()
