@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 import json
+import sys
 
 def main():
     file = sys.argv[1]
