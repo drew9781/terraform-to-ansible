@@ -8,7 +8,9 @@ def main():
 
 
 def parse( file ):
-     buffer = json.loads(file)
-     print(buffer['resources']['name'])
+     with open(file, 'r') as myFile:
+        #buffer = (myFile.read())
+        buffer = json.load(myFile)
+     print(buffer['values']['root_module']['resources'][0]['name'])
 
 main()
