@@ -28,7 +28,7 @@ def main():
 
    if switch == '--list':
       groupList = buildGroupList( resourceList )
-      print(groupList)
+      print(json.dumps(groupList, sort_keys=True, indent=2))
 
       
 
