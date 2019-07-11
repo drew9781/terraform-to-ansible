@@ -69,6 +69,8 @@ def buildGroupList( _resourceList):
             groupList[_resource[ 'tags' ][ 'group' ]][ 'hosts' ].append( key )
          else:
             groupList[ 'ungrouped' ][ 'hosts' ].append( key )
+      else:
+         groupList[ 'ungrouped' ][ 'hosts' ].append( key )
    return groupList
 
 def parseHost( _groupList ):
