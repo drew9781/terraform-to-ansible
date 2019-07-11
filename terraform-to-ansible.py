@@ -16,8 +16,8 @@ def main():
    try: 
       file = sys.argv[2]
    except IndexError:
-      print("info: Running with no specified file location")
-      sys.exit()
+      #print("info: Running with no specified file location")
+      file = 'json.test'
 
    with open(file, 'r') as myFile:
       #buffer = (myFile.read())
