@@ -27,7 +27,7 @@ def main():
          print(file)
          sys.exit()
       elif jsonFile in os.listdir(parentDir):
-         file = parentDir + '../' + jsonFile
+         file = parentDir + '/' + jsonFile
 
    with open(file, 'r') as myFile:
       #buffer = (myFile.read())
