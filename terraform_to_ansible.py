@@ -6,6 +6,8 @@ import os
 
 def main():
    
+   jsonFile = 'json.test'
+
    try: 
       switch = sys.argv[1]
       if not switch == ('--list' or '--host'):
@@ -17,11 +19,12 @@ def main():
    try: 
       file = sys.argv[2]
    except IndexError:
-      #print("info: Running with no specified file location")
-      try:   
-         file = os.path.dirname(os.path.realpath(__file__)) + '/' + 'json.test'
-      except IndexError:
-         file = os.path.dirname(os.path.realpath(__file__)) + '../' + 'json.test'
+      currentDir = os.path.dirname(os.path.realpath(__file__))
+      parentDir  = os.oath.dirname(os.path.dirname(os.path.realpath(__file__)))
+      if jsonFile in currentDir:
+         file = currentDir + '/' + jsonFile
+      elif jsonFile in parentDir:
+         file = parentDir + '../' + jsonFile
 
    with open(file, 'r') as myFile:
       #buffer = (myFile.read())
