@@ -21,9 +21,12 @@ def main():
    except IndexError:
       currentDir = os.path.dirname(os.path.realpath(__file__))
       parentDir  = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-      if jsonFile in currentDir:
+      
+      if jsonFile in os.listdir(currentDir):
          file = currentDir + '/' + jsonFile
-      elif jsonFile in parentDir:
+         print(file)
+         sys.exit()
+      elif jsonFile in os.listdir(parentDir):
          file = parentDir + '../' + jsonFile
 
    with open(file, 'r') as myFile:
