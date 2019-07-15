@@ -50,7 +50,7 @@ def parseResourceProxmox( _resource ):
    inventory[ name ][ 'ansible_host' ]   =   parseProxmoxIP( _resource['ipconfig0'] )
    inventory[ name ][ 'vm' ]   =   _resource['name']  
    if 'tags' in _resource:
-      inventory[ name ][ 'tags' ] =   _resource['tags'] # - feat request
+      inventory[ name ][ 'tags' ] =   _resource['tags'] 
    return inventory
 
 def parseProxmoxIP( preFormat ):
@@ -77,4 +77,5 @@ def buildGroupList( _resourceList):
 def parseHost( _groupList ):
    return
 
-main()
+if __name__== "__main__":
+   main()
