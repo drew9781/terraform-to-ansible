@@ -18,7 +18,10 @@ def main():
       file = sys.argv[2]
    except IndexError:
       #print("info: Running with no specified file location")
-      file = os.path.dirname(os.path.realpath(__file__)) + '/' + 'json.test'
+      try:   
+         file = os.path.dirname(os.path.realpath(__file__)) + '/' + 'json.test'
+      except IndexError:
+         file = os.path.dirname(os.path.realpath(__file__)) + '../' + 'json.test'
 
    with open(file, 'r') as myFile:
       #buffer = (myFile.read())
