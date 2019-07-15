@@ -20,7 +20,7 @@ def main():
       file = sys.argv[2]
    except IndexError:
       currentDir = os.path.dirname(os.path.realpath(__file__))
-      parentDir  = os.oath.dirname(os.path.dirname(os.path.realpath(__file__)))
+      parentDir  = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
       if jsonFile in currentDir:
          file = currentDir + '/' + jsonFile
       elif jsonFile in parentDir:
