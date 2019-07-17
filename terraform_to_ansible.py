@@ -67,10 +67,10 @@ def parseProxmoxIP( preFormat ):
    return ip[0]
 
 def buildGroupList( _resourceList):
-   groupList = { '_meta' : { 'hostVars' : {} }, 'ungrouped' : { 'hosts' : []}, 'all' : { 'children' : [ 'ungrouped']}}
+   groupList = { '_meta' : { 'hosts' : {} }, 'ungrouped' : { 'hosts' : []}, 'all' : { 'children' : [ 'ungrouped']}}
    for key in _resourceList:
       _resource = _resourceList[key]
-      groupList['_meta']['hostVars'][key] = _resource
+      groupList['_meta']['hosts'][key] = _resource
       if 'tags' in _resource:
          if 'group' in _resource['tags']:
             if not _resource[ 'tags' ]['group'] in groupList:
