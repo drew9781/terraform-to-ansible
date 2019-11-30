@@ -31,10 +31,12 @@ def main():
 
    with open(file, 'r') as myFile:
       #buffer = (myFile.read())
-      resources = json.load(myFile)
-      resources = resources['values']['root_module']['resources']
-   resourceList = parseResources( resources )
-   
+      raw = json.load(myFile)
+      modules = raw['values']['root_module']['child_modules'] # [0]['resources']
+
+   resourceList = {}
+   for module in modules:
+      resourceList[module['address']] = parseResources( module['resources'])
 
    if switch == '--list':
       groupList = buildGroupList( resourceList )
@@ -53,7 +55,7 @@ def parseResources( _resources ):
 
 def parseResourceProxmox( _resource ):
    inventory = {}
-   name      = _resource['name']
+   name      = _resource['values']['name'].split('.')[0]
    _resource = _resource['values']
    inventory[ name ] =  {}
    inventory[ name ][ 'ansible_host' ]   =   parseProxmoxIP( _resource['ipconfig0'] )
@@ -68,19 +70,26 @@ def parseProxmoxIP( preFormat ):
 
 def buildGroupList( _resourceList):
    groupList = { '_meta' : { 'hosts' : {} }, 'ungrouped' : { 'hosts' : []}, 'all' : { 'children' : [ 'ungrouped']}}
-   for key in _resourceList:
-      _resource = _resourceList[key]
-      groupList['_meta']['hosts'][key] = _resource
-      if 'tags' in _resource:
-         if 'group' in _resource['tags']:
-            if not _resource[ 'tags' ]['group'] in groupList:
-               groupList[_resource[ 'tags' ]['group']] = {'hosts' : []}
-               groupList[ 'all' ][ 'children' ].append( _resource['tags']['group'] )
-            groupList[_resource[ 'tags' ][ 'group' ]][ 'hosts' ].append( key )
-         else:
-            groupList[ 'ungrouped' ][ 'hosts' ].append( key )
-      else:
-         groupList[ 'ungrouped' ][ 'hosts' ].append( key )
+   for module in _resourceList:
+      moduleName = module.split('.')[1]
+      groupList[moduleName] = { 'hosts' : []}
+      groupList[ 'all' ][ 'children' ].append( moduleName)
+      
+      for key in _resourceList[module]:
+         _resource = _resourceList[module][key]
+         groupList['_meta']['hosts'][key] = _resource
+         if ('tags' in _resource) and (_resource['tags'] != None):
+            if 'group' in _resource['tags']:
+               if not _resource[ 'tags' ]['group'] in groupList:
+                  groupList[_resource[ 'tags' ]['group']] = {'hosts' : []}
+                  groupList[ 'all' ][ 'children' ].append( _resource['tags']['group'] )
+               groupList[_resource[ 'tags' ][ 'group' ]][ 'hosts' ].append( key ) # .append(key) is just adding the node to the group
+         # don't need to add to ungrouped, because all nodes should be added to their module group now
+         #    else:   
+         #       groupList[ 'ungrouped' ][ 'hosts' ].append( key )
+         # else:
+         #    groupList[ 'ungrouped' ][ 'hosts' ].append( key )
+         groupList[ moduleName ][ 'hosts' ].append( key )
    return groupList
 
 def parseHost( _groupList ):
